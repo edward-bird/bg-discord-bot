@@ -21,7 +21,7 @@ const mmrEmbed = (battleID, mmr) => {
             .setURL(`http://bgstats.cintrest.com/${battleIDSeparated[0]}-${battleIDSeparated[1]}`)
             .setImage(images[Math.floor(Math.random() * images.length)])
             .setFooter({
-                text: 'Ну и фрик конечно',
+                text: 'Ну и фрик конечно!',
                 iconURL: 'https://i.kym-cdn.com/photos/images/newsfeed/001/454/633/14f.png'
             })
             .setTimestamp()
