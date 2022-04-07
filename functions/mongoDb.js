@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-//const dbClient = new MongoClient("mongodb+srv://edward:1234@cluster0.6ulcw.mongodb.net/bg-discord-bot?retryWrites=true&w=majority");
-const mongoUrl = 'mongodb+srv://edward:1234@cluster0.6ulcw.mongodb.net/bg-discord-bot?retryWrites=true&w=majority'
+const config = require('../config.json');
+const mongoUrl = config.mongoUrl;
 
 const startDB = async () => {
     try {

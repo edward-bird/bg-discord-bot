@@ -17,7 +17,7 @@ const mmrEmbed = (battleID, mmr) => {
     return (new MessageEmbed()
             .setColor('#8c00ff')
             .setTitle(battleID.toString())
-            .addField('Забустился до:', `${mmr} ММР`, true)
+            .addField('Забустился доооо:', `${mmr} ММР`, true)
             .setURL(`http://bgstats.cintrest.com/${battleIDSeparated[0]}-${battleIDSeparated[1]}`)
             .setImage(images[Math.floor(Math.random() * images.length)])
             .setFooter({
