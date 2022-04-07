@@ -3,7 +3,8 @@ const User = require('../schemas/user');
 const createUser = async (discordID, battleID) => {
     const newUser = new User({
         ID: discordID,
-        battleTag: battleID
+        battleTag: battleID,
+        lastBattleID: 0
     })
     await newUser.save();
 }
@@ -18,5 +19,12 @@ const getBattleID = async (discordID) => {
     return user[0]['battleTag'];
 }
 
+const getAllUsers = async () => {
+    return await User.find();
+}
 
-module.exports = {createUser, userExist, getBattleID};
+const setLastGame = async (battleTag, gameID) => {
+    await User.updateOne({battleTag: battleTag}, {lastBattleID: gameID});
+}
+
+module.exports = {createUser, userExist, getBattleID, getAllUsers, setLastGame};

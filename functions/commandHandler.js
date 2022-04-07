@@ -1,7 +1,9 @@
 const {Client, Intents, Message} = require('discord.js');
-const {createUser, userExist, getBattleID} = require('./dbFunctions');
+const {createUser, userExist, getBattleID, getAllUsers, setLastGame} = require('./dbFunctions');
 const {getUserData} = require('./getData');
-const {mmrEmbed} = require('./embedGenerator')
+const {mmrEmbed} = require('./embedGenerator');
+const interval = 60000;
+let repeatStarted = false;
 
 const commandHandler = async (command, args, msg) => {
     const currentUserID = msg.author.id;
@@ -14,10 +16,65 @@ const commandHandler = async (command, args, msg) => {
             await registration(currentUserID, msg);
             break;
         }
+
+        case 'repeat':{
+            if(repeatStarted){
+                msg.reply('Уже наблюдаю');
+            } else {
+                msg.reply('НАБЛЮДАЮ');
+                repeatStarted = true;
+                setInterval(() => checkLastGame(msg), interval);
+            }
+            break;
+        }
         default: msg.reply('Нет такой команды');
     }
 }
 
+const checkLastGame = async (msg) => {
+    console.log('check...');
+    const users = await getAllUsers();
+    for (let user in users) {
+        if (users.hasOwnProperty(user)){
+            const battleTag = users[user]['battleTag'];
+            const currentBattleID = users[user]['lastBattleID'];
+            await getUserData(battleTag, async (err, response, body) => {
+                const allGames = JSON.parse(body)['data']['allGameRecords'];
+                if (allGames.length !== 0) {
+                    const lastGame = allGames[allGames.length - 1];
+                    const lastBattleID = lastGame['id'];
+                    if (lastBattleID !== currentBattleID){
+                        const mmrChangeString = lastGame['mmrChange'].toString();
+                        const mmrChangeInt = Number.parseInt(mmrChangeString, 10);
+                        await setLastGame(battleTag, lastBattleID);
+                        msg.channel.send(`${battleTag} ${mmrChangeResponse(mmrChangeInt)}${mmrChangeInt} ммр`);
+                    }
+                }
+            })
+        }
+    }
+}
+
+const mmrChangeResponse = (mmrChangeInt) =>{
+    if (mmrChangeInt >= 0 && mmrChangeInt < 20){
+        return "Фрику повезло, поднял ";
+    }
+    if (mmrChangeInt >= 20 && mmrChangeInt < 60){
+        return "Вонючка залез в топ 3 и поднял  ";
+    }
+    if (mmrChangeInt >= 60){
+        return "Сыграл умом и получил ";
+    }
+    if (mmrChangeInt < 0 && mmrChangeInt >= -20){
+        return "Фрику не повезло, потерял ";
+    }
+    if (mmrChangeInt < -20 && mmrChangeInt >= -60){
+        return "Сосалыч ты??? Опустился на ";
+    }
+    if (mmrChangeInt < -60){
+        return "ОСВОИЛ БУТЫЛКУ! проебано "
+    }
+}
 const getMmr = async (id, args, msg) => {
     let battleID = null;
     if (args.length === 0){
