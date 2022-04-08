@@ -57,7 +57,7 @@ const matchResultEmbed = (hero, mmrChange, currentMMR, position, battleID) => {
             .setTimestamp()
             .setThumbnail(bgHeroes[hero])
             .setDescription(mmrChangeResponse(mmrChange))
-            .setImage(afterGameImages[parseInt(position, 10) + 1])
+            .setImage(afterGameImages[parseInt(position, 10) - 1])
     )
 };
 
