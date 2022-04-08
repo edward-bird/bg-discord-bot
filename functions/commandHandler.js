@@ -1,13 +1,18 @@
 const {Client, Intents, Message} = require('discord.js');
 const {createUser, userExist, getBattleID, getAllUsers, setLastGame} = require('./dbFunctions');
 const {getUserData} = require('./getData');
-const {mmrEmbed} = require('./embedGenerator');
+const {mmrEmbed, matchResultEmbed} = require('./embedGenerator');
 const interval = 60000;
 let repeatStarted = false;
+let intervalFunction;
 
 const commandHandler = async (command, args, msg) => {
     const currentUserID = msg.author.id;
     switch (command) {
+        case 'test':{
+
+            break;
+        }
         case 'mmr': {
             await getMmr(currentUserID, args, msg);
             break;
@@ -17,13 +22,18 @@ const commandHandler = async (command, args, msg) => {
             break;
         }
 
-        case 'repeat':{
+        case 'watch':{
             if(repeatStarted){
                 msg.reply('Уже наблюдаю');
             } else {
-                msg.reply('НАБЛЮДАЮ');
+                msg.reply('Наблюдаю...');
                 repeatStarted = true;
-                setInterval(() => checkLastGame(msg), interval);
+                intervalFunction = setInterval(() => checkLastGame(msg), interval);
+            }
+            if (args.length !== 0 && args[0] === 'stop'){
+                repeatStarted = false;
+                clearInterval(intervalFunction);
+                msg.reply('Не подсматриваю');
             }
             break;
         }
@@ -46,8 +56,11 @@ const checkLastGame = async (msg) => {
                     if (lastBattleID !== currentBattleID){
                         const mmrChangeString = lastGame['mmrChange'].toString();
                         const mmrChangeInt = Number.parseInt(mmrChangeString, 10);
+                        const hero = lastGame['hero'];
+                        const currentMMR = lastGame['mmr'];
+                        const position = lastGame['position'];
                         await setLastGame(battleTag, lastBattleID);
-                        msg.channel.send(`${battleTag} ${mmrChangeResponse(mmrChangeInt)}${mmrChangeInt} ммр`);
+                        msg.channel.send({embeds: [matchResultEmbed(hero, mmrChangeInt, currentMMR, position, battleTag)]});
                     }
                 }
             })
@@ -55,26 +68,7 @@ const checkLastGame = async (msg) => {
     }
 }
 
-const mmrChangeResponse = (mmrChangeInt) =>{
-    if (mmrChangeInt >= 0 && mmrChangeInt < 20){
-        return "Фрику повезло, поднял ";
-    }
-    if (mmrChangeInt >= 20 && mmrChangeInt < 60){
-        return "Вонючка залез в топ 3 и поднял  ";
-    }
-    if (mmrChangeInt >= 60){
-        return "Сыграл умом и получил ";
-    }
-    if (mmrChangeInt < 0 && mmrChangeInt >= -20){
-        return "Фрику не повезло, потерял ";
-    }
-    if (mmrChangeInt < -20 && mmrChangeInt >= -60){
-        return "Сосалыч ты??? Опустился на ";
-    }
-    if (mmrChangeInt < -60){
-        return "ОСВОИЛ БУТЫЛКУ! проебано "
-    }
-}
+
 const getMmr = async (id, args, msg) => {
     let battleID = null;
     if (args.length === 0){
