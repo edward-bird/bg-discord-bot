@@ -11,7 +11,7 @@ client.on('ready', async client => {
     await startDB();
     console.log("STARTED");
     client.channels.fetch(config.channelID).then(channel => {
-        channel.send('стартанул');
+        channel.send('!watch');
         /*setInterval(() => {
             getUserData('dirtyprophet#2508', (err, response, body) => {
                 const allGames = JSON.parse(body)['data']['allGameRecords'];
@@ -25,7 +25,7 @@ client.on('ready', async client => {
 });
 
 client.on("messageCreate", async msg => {
-    if (msg.author.bot) return null;
+    if (msg.author.bot && msg.content !== '!watch') return null;
     if (!msg.content.startsWith(config.prefix)) return null;
 
     const commandBody = msg.content.slice(config.prefix.length);
