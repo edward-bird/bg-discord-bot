@@ -14,14 +14,14 @@ const mmrImages = [
 ]
 
 const afterGameImages = [
-    'https://psv4.userapi.com/c812737/u128984411/docs/3c8910d99e91/giphy.gif?extra=a2L3zk14h7TX_UHRlzq4rVy_D6rXpJHz9lSSx-7JvD2GTZV51MV8P2f9wQiUp3nhzAvpu_w30aNCp_LJCwgKslMBNx6jD0QzX8UeDUB6GZ6jy4xH0LKOXS9oqshzfEkYO0gPr53yCfD2hyJriEmLkwP58w',
-    'https://psv4.userapi.com/c414620/u2000039553/docs/568ff4417858/file.gif?extra=CaTIshWdaW8Drj7JLtSPldwciWzpBlEgUujb8St226iw8u58Z0VXh6dwDfWOQn6wln62Y99rLTYL75lzMZEp_nFuaZ57piwgYlTkFQKcqLypkvKjqcopfxpj0lg6cj_YksZajbKFm-uO9jQefKqgoSBz7A',
+    'https://media1.tenor.com/images/173a57cec462b751a130ac297ca44fcd/tenor.gif?itemid=25349731',
+    'https://media1.tenor.com/images/90a1fa14e3b07bb41a60c5e4d2f9c086/tenor.gif?itemid=25349747',
     'https://c.tenor.com/g2kCTsNgDBYAAAAd/monkey-exercise-zzsoobn.gif',
     'https://c.tenor.com/tOsBzTwsVFUAAAAC/dont-lose-giants-gaming.gif',
-    'https://psv4.userapi.com/c536132/u181849065/docs/d3/c3842ac478d7/proschay_bebra.gif?extra=XGIWi1J4agbhqNnuCPFFh2GAH3ghmi34O-_wtMq1uoCepy40r7x7Xhtgkuxcg3o3rluUFvwkhysZZPX4jr-heQeUykpf3klsszW-tWlKbQgUdPX2Ud7eBTWDaIazbGXPDjxlUxS4SD0-ah4fDDcuLj4gsA',
-    'https://psv4.userapi.com/c816124/u2000038128/docs/5bef20350988/file.gif?extra=6k3HdO4ryHOg1cUo_EGcNhyTLfFZxZ7mCJPJ-tjehUaLk53QNsDjfQ5v0HwO2P2XCZZ9S6oSgiPx6GJV9kNT07D8z4XdnuAFQm2GtIr8ii-xfKOlhwCPcGBEOrhPnYvHJMaEGull78Kg9iM4NgAwdJn5Dw',
+    'https://media1.tenor.com/images/16af6595ad8be21e2bf2ec490c7a1cef/tenor.gif?itemid=25349806',
+    'https://media1.tenor.com/images/72de4bb616e39c05fda85f47dda7f51f/tenor.gif?itemid=25349783',
     'https://c.tenor.com/kpQ-_wIRCEAAAAAd/rage-mad.gif',
-    'https://psv4.userapi.com/c537232/u405430912/docs/d33/91def1552e78/195.gif?extra=2lcBqVV-LLtEs0KSWybIjEtciHu4hJb5mVj546r2wGR3JDrz9_JDhFC4gaKhMzSb5kZw19homtT6r702NXmvGiVPA79lI_-dtMv9bd2VH5GudD3pcXVBxx1foU8jQK8PcOarZc8ZZP8txyYiJxyDmViVIQ'
+    'https://media1.tenor.com/images/ffd5aebebe135c9ddbcffab8e1d96706/tenor.gif?itemid=25349768'
 ]
 
 const mmrEmbed = (battleID, mmr) => {
