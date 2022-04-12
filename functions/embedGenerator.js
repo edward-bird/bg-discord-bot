@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const bgHeroes = require('../hs-bg.json');
+//HsJI8XPxeS
 
 const mmrImages = [
     'https://vk.com/doc128984411_592674013?hash=f59fa72b596586f3d2&dl=6ccd3e61f0db31568a&wnd=1',
@@ -42,6 +43,31 @@ const mmrEmbed = (battleID, mmr) => {
 
 }
 
+const topMmrEmbed = (mmrList) => {
+    console.log(mmrList);
+    let toEmbed = '';
+    mmrList.forEach((item, i) => {
+        toEmbed += `Топ #${i + 1}: ${item['battleTag']} -------- ${item['mmr']} ммр\n\n`;
+    });
+    return new MessageEmbed()
+        .setColor('#85ff95')
+        .setTitle('ТОП ММРа ДАННОГО ДИСКОРД КАНАЛА: ')
+        .setFooter({
+            text: 'До завупача вам еще расти и расти',
+            iconURL: 'https://media1.tenor.com/images/8cddf9bddd6f59a3a2636cbb21319cef/tenor.gif?itemid=25360393'})
+        .setDescription(toEmbed);
+
+
+    /*mmrList.forEach((item, i) => {
+        /!*embed.addField(`\u200B`, `#${i+1}`, true);
+        embed.addField(`\u200B`, `${item['battleTag']}`, true);
+        embed.addField(`\u200B`, `${item['mmr']}`, true);
+        embed.addField(`\u200B`, '\u200B', false);*!/
+        /!*embed.addField(`${i+1}:`, '\u200B');
+        embed.addField(`${item['mmr']}`, 'aa', true);*!/
+    })*/
+}
+
 const matchResultEmbed = (hero, mmrChange, currentMMR, position, battleID) => {
     const battleIDSeparated = battleID.split('#');
     return (new MessageEmbed()
@@ -82,4 +108,4 @@ const mmrChangeResponse = (mmrChangeInt) =>{
     }
 }
 
-module.exports = {mmrEmbed, matchResultEmbed};
+module.exports = {mmrEmbed, matchResultEmbed, topMmrEmbed};

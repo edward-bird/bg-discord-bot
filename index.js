@@ -11,15 +11,7 @@ client.on('ready', async client => {
     await startDB();
     console.log("STARTED");
     client.channels.fetch(config.channelID).then(channel => {
-        channel.send('!watch');
-        /*setInterval(() => {
-            getUserData('dirtyprophet#2508', (err, response, body) => {
-                const allGames = JSON.parse(body)['data']['allGameRecords'];
-                const lastGame = allGames[allGames.length - 1];
-                const currentMMR = lastGame['mmr'];
-                channel.send(`ВЛАД 3к лох, а Глеб ${currentMMR} фрик`);
-            });
-        }, checkTimer);*/
+        //channel.send('!watch');
     });
 
 });
