@@ -43,6 +43,20 @@ const mmrEmbed = (battleID, mmr) => {
 
 }
 
+const lastGamesEmbed = (battleID, lastGames) => {
+    const battleIDSeparated = battleID.split('#');
+    return (new MessageEmbed()
+            .setColor('#aaff85')
+            .setTitle(`Последние 10 игр ${battleID.toString()}`)
+            .setURL(`http://bgstats.cintrest.com/${battleIDSeparated[0]}-${battleIDSeparated[1]}`)
+            .setDescription(lastGames)
+            .setFooter({
+                text: 'как же он бустится',
+                iconURL: 'https://c.tenor.com/o9mGGS0CDRwAAAAi/scratch-cat.gif'
+            })
+    )
+
+}
 const topMmrEmbed = (mmrList) => {
     console.log(mmrList);
     let toEmbed = '';
@@ -108,4 +122,4 @@ const mmrChangeResponse = (mmrChangeInt) =>{
     }
 }
 
-module.exports = {mmrEmbed, matchResultEmbed, topMmrEmbed};
+module.exports = {mmrEmbed, matchResultEmbed, topMmrEmbed, lastGamesEmbed};

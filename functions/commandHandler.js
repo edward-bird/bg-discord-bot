@@ -1,7 +1,7 @@
 const {Client, Intents, Message} = require('discord.js');
 const {createUser, userExist, getBattleID, getAllUsers, setLastGame} = require('./dbFunctions');
 const {getUserData} = require('./getData');
-const {mmrEmbed, matchResultEmbed, topMmrEmbed} = require('./embedGenerator');
+const {mmrEmbed, matchResultEmbed, topMmrEmbed, lastGamesEmbed} = require('./embedGenerator');
 const interval = 60000;
 let repeatStarted = false;
 let intervalFunction;
@@ -13,9 +13,13 @@ const commandHandler = async (command, args, msg) => {
     const currentUserID = msg.author.id;
     switch (command) {
         case 'top':{
-            /*await getAllUsersGames(getTopMmr).then(async () => {
-                await printTopMmr(msg).then(() => mmrList.length = 0);
-            });*/
+            await getAllUsersGames(getTopMmr).then(async () => {
+                printTopMmr(msg).then(() => mmrList.length = 0);
+            });
+            break;
+        }
+        case 'last':{
+            await getLastGames(currentUserID, args, msg);
             break;
         }
         case 'test':{
@@ -160,8 +164,47 @@ const getMmr = async (id, args, msg) => {
             msg.reply({embeds: [mmrEmbed(battleID, currentMMR.toString())]});
         })
     }
-
 }
+
+const getLastGames = async (id, args, msg) => {
+    let battleID = null;
+    if (args.length === 0){
+        await userExist(id).then(async (userExist)=>{
+            if (!userExist){
+                msg.reply('Надо зарегестрироваться !reg');
+            } else {
+                battleID = await getBattleID(id);
+            }
+        });
+    } else {
+        battleID = args[0];
+    }
+    if (battleID !== null){
+        await getUserData(battleID, async (err, response, body) =>{
+            let allGames;
+            try {
+                allGames = JSON.parse(body)['data']['allGameRecords'];
+            } catch (e) {
+                console.log(e);
+            }
+            if (allGames.length === 0) {
+                msg.reply('Тебя нет в базе, фрик');
+                return;
+            }
+
+            const lastGames = allGames.slice(allGames.length - 10, allGames.length).reverse();
+            let lastGamesString = '';
+            lastGames.forEach(element => {
+                lastGamesString += `${element['position']}# --- ММР: ${element['mmr']} --- `;
+                lastGamesString += `${Number.parseInt(element['mmrChange'], 10) >= 0 ? ':white_check_mark: ' : ':x: '}`;
+                lastGamesString += `${Math.abs(element['mmrChange'])}\n\n`;
+            })
+            console.log(lastGamesString);
+            msg.channel.send({embeds: [lastGamesEmbed(battleID, lastGamesString)]});
+        });
+    }
+}
+
 
 const registration = async (id, msg) => {
     if (await userExist(id)) {
