@@ -11,7 +11,7 @@ client.on('ready', async client => {
     await startDB();
     console.log("STARTED");
     client.channels.fetch(config.channelID).then(channel => {
-        //channel.send('!watch');
+        channel.send('!watch').then(msg => setTimeout(() => msg.delete(), 6000));
     });
 
 });

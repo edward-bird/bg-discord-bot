@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const bgHeroes = require('../hs-bg.json');
+const prettyLink = require('prettylink');
 //HsJI8XPxeS
 
 const mmrImages = [
@@ -43,6 +44,35 @@ const mmrEmbed = (battleID, mmr) => {
 
 }
 
+const helpEmbed = () => {
+    return (new MessageEmbed()
+            .setColor('#f4fd85')
+            .setTitle("Список всех команд")
+            .addFields(
+                {name: '!mmr', value: 'Ммр'},
+                      {name: '!top', value: 'Топ ммра данного дискорд канала', inline: true},
+                      {name: '!graph', value: 'График изменения ммра, последние 250 игр'},
+                      {name: '!last', value: 'Последние 10 игр', inline: true},
+                      {name: '!watch', value: 'Мониторинг новых игр и вывод в канал (по умолчанию включено)'},
+                      {name: '!watch stop', value: 'Остановить мониторинг', inline: true},
+            )
+            .setDescription("Команда без аргументов возвращает твои значения, возможен аргумент BattleTag игрока")
+
+    )
+
+}
+
+const graphEmbed = async (battleID, graph) => {
+    const tinyImgUrl = new prettyLink.TinyURL();
+    const result = await tinyImgUrl.short(graph);
+    return (new MessageEmbed()
+            .setColor('#ff8b8b')
+            .setTitle(battleID.toString())
+            .setImage(result)
+    )
+
+}
+
 const lastGamesEmbed = (battleID, lastGames) => {
     const battleIDSeparated = battleID.split('#');
     return (new MessageEmbed()
@@ -58,7 +88,6 @@ const lastGamesEmbed = (battleID, lastGames) => {
 
 }
 const topMmrEmbed = (mmrList) => {
-    console.log(mmrList);
     let toEmbed = '';
     mmrList.forEach((item, i) => {
         toEmbed += `Топ #${i + 1}: ${item['battleTag']} -------- ${item['mmr']} ммр\n\n`;
@@ -122,4 +151,4 @@ const mmrChangeResponse = (mmrChangeInt) =>{
     }
 }
 
-module.exports = {mmrEmbed, matchResultEmbed, topMmrEmbed, lastGamesEmbed};
+module.exports = {mmrEmbed, matchResultEmbed, topMmrEmbed, lastGamesEmbed, graphEmbed, helpEmbed};

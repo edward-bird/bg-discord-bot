@@ -1,10 +1,11 @@
 const User = require('../schemas/user');
 
-const createUser = async (discordID, battleID) => {
+const createUser = async (discordID, serverID, battleID) => {
     const newUser = new User({
         ID: discordID,
         battleTag: battleID,
-        lastBattleID: 0
+        lastBattleID: 0,
+        serverID: serverID
     })
     await newUser.save();
 }
@@ -19,8 +20,8 @@ const getBattleID = async (discordID) => {
     return user[0]['battleTag'];
 }
 
-const getAllUsers = async () => {
-    return await User.find();
+const getAllUsers = async (serverID) => {
+    return await User.find({serverID: serverID});
 }
 
 const setLastGame = async (battleTag, gameID) => {
